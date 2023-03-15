@@ -36,5 +36,8 @@ private:
 
 	GLuint m_testVBO = 0;
 	GLuint m_testVBO1 = 0;
+
+	float scale = 0.2f;
+	bool up_side_down = false;
 };
 

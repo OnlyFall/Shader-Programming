@@ -203,7 +203,17 @@ void Renderer::class0310_Rendering()
 	glVertexAttribPointer(attribLocation_Position1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
 
 	int uniformScale = glGetUniformLocation(m_SolidRectShader, "u_Scale");
-	glUniform1f(uniformScale, 0.5f);
+	if (up_side_down) {
+		scale += 0.0001f;
+		if (scale >= 1.f)
+			up_side_down = false;
+	}
+	else {
+		scale -= 0.0001f;
+		if (scale <= 0)
+			up_side_down = true;
+	}
+	glUniform1f(uniformScale, scale);
 	glDrawArrays(GL_TRIANGLES, 0, 3); // 첫번째 인자는 primitive가 됨
 }
 
