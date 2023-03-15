@@ -191,9 +191,17 @@ void Renderer::class0310_Rendering()
 	glUniform4f(glGetUniformLocation(m_SolidRectShader, "u_Trans"), 0, 0, 0, 1);
 	glUniform4f(glGetUniformLocation(m_SolidRectShader, "u_Color"), 1, 1, 1, 1);
 
-	glEnableVertexAttribArray(0); // 이거 나중에 설명해 주신다 함!
+	int attribLocation_Position = glGetAttribLocation(m_SolidRectShader, "a_Position");
+	glEnableVertexAttribArray(attribLocation_Position); // 이거 나중에 설명해 주신다 함! 
 	glBindBuffer(GL_ARRAY_BUFFER, m_testVBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(attribLocation_Position, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+
+	int attribLocation_Position1 = glGetAttribLocation(m_SolidRectShader, "a_Position1");
+	glEnableVertexAttribArray(attribLocation_Position1);
+	glBindBuffer(GL_ARRAY_BUFFER, m_testVBO1);
+	glVertexAttribPointer(attribLocation_Position1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+
 	glDrawArrays(GL_TRIANGLES, 0, 3); // 첫번째 인자는 primitive가 됨
 }
 
@@ -208,12 +216,18 @@ void Renderer::Class0310()
 {
 
 	float vertices[] = { 0,0,0,1,0,0,1,1,0 };
+	float vertices1[] = { -1,-1,0,
+						0,-1,0,
+						0,0,0 };
 
 	glGenBuffers(1, &m_testVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_testVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // GL_STATIC_DRAW -> 이 옵션이 붙으면 gpu memory로 올리고 이 정보는 절대로 변하지 않는다를 의미함!
 																			   // GL_DYNAMIC_DRAW -> 데이터를 올리고 나서 값이 바뀔 수 있을 때 사용 (성능적으로 볼때는 위아래 큰 차이는 없지만 추가적으로 메모리가 잡힘)
 	
+	glGenBuffers(1, &m_testVBO1);
+	glBindBuffer(GL_ARRAY_BUFFER, m_testVBO1);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
 	//int size = 40000000000;
 	//float* testTemp = new float[size];
 	//memset(testTemp, 1, sizeof(float) * size);
