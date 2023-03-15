@@ -202,6 +202,8 @@ void Renderer::class0310_Rendering()
 	glBindBuffer(GL_ARRAY_BUFFER, m_testVBO1);
 	glVertexAttribPointer(attribLocation_Position1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
 
+	int uniformScale = glGetUniformLocation(m_SolidRectShader, "u_Scale");
+	glUniform1f(uniformScale, 0.5f);
 	glDrawArrays(GL_TRIANGLES, 0, 3); // 첫번째 인자는 primitive가 됨
 }
 
