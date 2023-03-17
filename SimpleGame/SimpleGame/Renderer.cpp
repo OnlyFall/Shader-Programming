@@ -20,6 +20,7 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 
 	//Load shaders
 	m_SolidRectShader = CompileShaders("./Shaders/SolidRect.vs", "./Shaders/SolidRect.fs");
+	m_ParticleShader = CompileShaders("./Shaders/Particle.vs", "./Shaders/Particle.fs");
 	
 	//Create VBOs
 	CreateVertexBufferObjects();
@@ -217,6 +218,24 @@ void Renderer::class0310_Rendering()
 	glDrawArrays(GL_TRIANGLES, 0, 3); // 첫번째 인자는 primitive가 됨
 }
 
+void Renderer::DrawParticle()
+{
+	GLuint program = m_ParticleShader;
+	glUseProgram(program);
+
+	int posLoc = glGetAttribLocation(program, "a_Position");
+	glEnableVertexAttribArray(posLoc);
+	glBindBuffer(GL_ARRAY_BUFFER, m_testVBO1);
+	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	int colorLoc = glGetAttribLocation(program, "a_Color");
+	glEnableVertexAttribArray(colorLoc);
+	glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
+	glVertexAttribPointer(colorLoc, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
 
 void Renderer::GetGLPosition(float x, float y, float *newX, float *newY)
 {
@@ -228,9 +247,7 @@ void Renderer::Class0310()
 {
 
 	float vertices[] = { 0,0,0,1,0,0,1,1,0 };
-	float vertices1[] = { -1,-1,0,
-						0,-1,0,
-						0,0,0 };
+	float vertices1[] = { -1,-1,0, 0,-1,0, 0,0,0 };
 
 	glGenBuffers(1, &m_testVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_testVBO);
@@ -240,6 +257,12 @@ void Renderer::Class0310()
 	glGenBuffers(1, &m_testVBO1);
 	glBindBuffer(GL_ARRAY_BUFFER, m_testVBO1);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
+
+	float color[] = { 1,0,0,1 ,0,1,0,1 ,0,0,1,1 };
+
+	glGenBuffers(1, &m_colorVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(color), color, GL_STATIC_DRAW);
 	//int size = 40000000000;
 	//float* testTemp = new float[size];
 	//memset(testTemp, 1, sizeof(float) * size);
