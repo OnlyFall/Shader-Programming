@@ -14,7 +14,7 @@ but WITHOUT ANY WARRANTY.
 
 #include "Renderer.h"
 
-Renderer *g_Renderer = NULL;
+Renderer* g_Renderer = NULL;
 
 void RenderScene(void)
 {
@@ -48,7 +48,7 @@ void SpecialKeyInput(int key, int x, int y)
 	RenderScene();
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 	// Initialize GL things
 	glutInit(&argc, argv);
@@ -84,6 +84,6 @@ int main(int argc, char **argv)
 
 	delete g_Renderer;
 
-    return 0;
+	return 0;
 }
 
