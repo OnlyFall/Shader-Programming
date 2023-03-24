@@ -238,13 +238,13 @@ void Renderer::DrawParticle()
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleEmitTimeVBO);
 	glVertexAttribPointer(emitTimeLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
-	g_time += 0.0004;
+	g_time += 0.0004; // 해당수치를 조절하시오
 
 	int time_loc = glGetUniformLocation(program, "u_Time");
 	glUniform1f(time_loc, g_time);
 
 	int accel_loc = glGetUniformLocation(program, "u_Accel");
-	glUniform3f(accel_loc, 0.f, -2.8f, 0.f);
+	glUniform3f(accel_loc, 0.f, -2.8f, 0.f);  // 3번째 인자를 조절하시오
 
 	glDrawArrays(GL_TRIANGLES, 0, m_ParticleVertexCount);
 
