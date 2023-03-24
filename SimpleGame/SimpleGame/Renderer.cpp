@@ -233,18 +233,18 @@ void Renderer::DrawParticle()
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleVBOvel);
 	glVertexAttribPointer(velLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	//int timeLoc = glGetUniformLocation(program, "u_Time");
-	//glUniform1f(timeLoc, g_time);
+	int emitTimeLoc = glGetAttribLocation(program, "a_EmitTime");
+	glEnableVertexAttribArray(emitTimeLoc);
+	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleEmitTimeVBO);
+	glVertexAttribPointer(emitTimeLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
-	g_time += 0.0016;
-	if (g_time > 1000.f)
-		g_time = 0.f;
+	g_time += 0.0004;
 
 	int time_loc = glGetUniformLocation(program, "u_Time");
 	glUniform1f(time_loc, g_time);
 
 	int accel_loc = glGetUniformLocation(program, "u_Accel");
-	glUniform3f(accel_loc, 0.f, -0.8f, 0.f);
+	glUniform3f(accel_loc, 0.f, -2.8f, 0.f);
 
 	glDrawArrays(GL_TRIANGLES, 0, m_ParticleVertexCount);
 
@@ -285,6 +285,7 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 	int particleCount = numParticleCount;
 	int floatCount = 3; // 버텍스당 몆개의 float 포인트의 갯수가 필요한가?
 	int totalFloatCount = particleCount * vertexCount * floatCount;
+	int totalfloatCountSingle = particleCount * vertexCount * 1;
 
 	m_ParticleVertexCount = particleCount * vertexCount;
 	float* vertices = NULL;
@@ -298,8 +299,8 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 	int index = 0;
 	for (int i = 0; i < numParticleCount; ++i)
 	{
-		float particleCenterX = 2.0f * (float)((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) - 0.5f);
-		float particleCenterY = 2.0f * (float)((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) - 0.5f);
+		float particleCenterX = 0.f * (float)((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) - 0.5f);
+		float particleCenterY = 0.f * (float)((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) - 0.5f);
 		vertices[index] = particleCenterX - particleSize; index++;
 		vertices[index] = particleCenterY + particleSize; index++;
 		vertices[index] = 0; index++;
@@ -323,12 +324,14 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 	glGenBuffers(1, &m_ParticleVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * totalFloatCount, vertices, GL_STATIC_DRAW);
+	delete[] vertices;
+	
 
 	index = 0;
 	for (int i = 0; i < numParticleCount; ++i)
 	{
 		float velX = 2.0f * (float)((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) - 0.5f);
-		float velY = 2.0f * (float)((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) - 0.5f);
+		float velY = 5.0f * (float)((static_cast <float> (rand()) / static_cast <float> (RAND_MAX)));
 		verticesvef[index] = velX; index++;
 		verticesvef[index] = velY; index++;
 		verticesvef[index] = 0; index++;
@@ -352,7 +355,25 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 	glGenBuffers(1, &m_ParticleVBOvel);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleVBOvel);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * totalFloatCount, verticesvef, GL_STATIC_DRAW);
-
-	delete[] vertices;
 	delete[] verticesvef;
+
+
+	float* verticesEmitTime = NULL;
+	verticesEmitTime = new float[totalfloatCountSingle];
+
+	index = 0;
+	for (int i = 0; i < numParticleCount; ++i)
+	{
+		float emitTime = ((float)rand()) / ((float)RAND_MAX) * 10.f;
+		verticesEmitTime[index] = emitTime; index++;
+		verticesEmitTime[index] = emitTime; index++;
+		verticesEmitTime[index] = emitTime; index++;
+		verticesEmitTime[index] = emitTime; index++;
+		verticesEmitTime[index] = emitTime; index++;
+		verticesEmitTime[index] = emitTime; index++;
+	}
+	glGenBuffers(1, &m_ParticleEmitTimeVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleEmitTimeVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * totalfloatCountSingle, verticesEmitTime, GL_STATIC_DRAW);
+	delete[] verticesEmitTime;
 }

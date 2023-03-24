@@ -43,6 +43,7 @@ private:
 	GLuint m_testVBO = 0;
 	GLuint m_testVBO1 = 0;
 	GLuint m_colorVBO = 0;
+	GLuint m_ParticleEmitTimeVBO = 0;
 
 	float scale = 0.2f;
 	float g_time = 0;
