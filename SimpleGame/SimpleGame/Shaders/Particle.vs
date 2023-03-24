@@ -3,6 +3,7 @@
 in vec3 a_Position;
 in vec3 a_Vel;
 in float a_EmitTime;
+in float a_LifeTime;
 
 uniform float u_Time;
 uniform vec3 u_Accel;
@@ -21,7 +22,7 @@ void main()
 	}
 	else
 	{
-		float newT = c_resetTime * fract(t/c_resetTime);
+		float newT = a_LifeTime * fract(t/a_LifeTime);
 		newPosition.xyz = a_Position 
 							+ a_Vel * newT 
 							+ 0.5 * u_Accel * newT * newT;
