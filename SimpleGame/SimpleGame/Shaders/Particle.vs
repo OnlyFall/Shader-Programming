@@ -53,7 +53,7 @@ vec4 GraphSin()
 		float newT = a_LifeTime * fract(t/a_LifeTime);
 		newPos.x = a_Position.x + c_Vel.x * newT;
 		newPos.y = a_Position.y + 
-					newT * a_Amp * sin(a_Period * newT * 2.0 * c_PI); // SIN 2주기를 하고싶다! 자주내는 부분임!
+					newT * a_Amp * sin((1.0 + newT) * a_Period * newT * 2.0 * c_PI); // SIN 2주기를 하고싶다! 자주내는 부분임!
 	}
 
 	return newPos;
