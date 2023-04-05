@@ -6,12 +6,13 @@ in float a_EmitTime;
 in float a_LifeTime;
 in float a_Period;
 in float a_Amp;
+in float a_Value;
 
 uniform float u_Time;
 uniform vec3 u_Accel;
 
 
-const vec3 c_Vel = vec3(0.5, 0.5, 0.0);
+const vec3 c_Vel = vec3(0.0, -0.8, 0.0);
 const float c_resetTime = 2.0;
 const float c_PI = 3.141592;
 const float c_Amp = 0.5;
@@ -51,8 +52,10 @@ vec4 GraphSin() // 시험문제로 나올 예정!!
 	else
 	{
 		float newT = a_LifeTime * fract(t/a_LifeTime);
-		newPos.x = a_Position.x + c_Vel.x * newT;
-		newPos.y = a_Position.y + c_Vel.y * newT;
+		float paraX = sin(a_Value * 2 * c_PI);
+		float paraY = cos(a_Value * 2 * c_PI);
+		newPos.x = a_Position.x + paraX + c_Vel.x * newT;
+		newPos.y = a_Position.y + paraY + c_Vel.y * newT;
 
 		vec2 nVel = vec2(-c_Vel.y, c_Vel.x); // 기준벡터
 		nVel = normalize(nVel);

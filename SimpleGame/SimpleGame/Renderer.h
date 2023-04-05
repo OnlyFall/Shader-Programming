@@ -45,7 +45,8 @@ private:
 	GLuint m_colorVBO = -1;
 	GLuint m_ParticleEmitTimeVBO = -1;
 	GLuint m_ParticleLifeTimeVBO = -1;
-	GLuint m_PatriclePeriodVBO = -1;
+	GLuint m_ParticlePeriodVBO = -1;
+	GLuint m_ParticleValueVBO = -1;
 	GLuint m_ParticleAmpVBO = -1;
 
 	float scale = 0.2f;
