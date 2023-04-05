@@ -24,7 +24,7 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 
 	//Create VBOs
 	CreateVertexBufferObjects();
-	CreateParticleVBO(1);
+	CreateParticleVBO(10);
 	if (m_SolidRectShader > 0 && m_VBORect > 0)
 	{
 		m_Initialized = true;
@@ -243,6 +243,16 @@ void Renderer::DrawParticle()
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleLifeTimeVBO);
 	glVertexAttribPointer(lifeTimeLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
+
+	int periodLoc = glGetAttribLocation(program, "a_Period");
+	glEnableVertexAttribArray(periodLoc);
+	glBindBuffer(GL_ARRAY_BUFFER, m_PatriclePeriodVBO);
+	glVertexAttribPointer(periodLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
+
+	int ampLoc = glGetAttribLocation(program, "a_Amp");
+	glEnableVertexAttribArray(ampLoc);
+	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleAmpVBO);
+	glVertexAttribPointer(ampLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 	g_time += 0.0004; // 해당수치를 조절하시오
 
 	int time_loc = glGetUniformLocation(program, "u_Time");
@@ -404,5 +414,47 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * totalfloatCountSingle, verticesLifeTime, GL_STATIC_DRAW);
 	delete[] verticesLifeTime;
 	
+
+	m_PatriclePeriodVBO;
+	// LifeTime
+	float* verticesPeriodTime = NULL;
+	verticesPeriodTime = new float[totalfloatCountSingle];
+
+	index = 0;
+	for (int i = 0; i < numParticleCount; ++i)
+	{
+		float peropd = 1.f * ((float)rand()) / ((float)RAND_MAX) * 1.f; // 라이프타임 수정은 여기서!
+		verticesPeriodTime[index] = peropd; index++;
+		verticesPeriodTime[index] = peropd; index++;
+		verticesPeriodTime[index] = peropd; index++;
+		verticesPeriodTime[index] = peropd; index++;
+		verticesPeriodTime[index] = peropd; index++;
+		verticesPeriodTime[index] = peropd; index++;
+	}
+	glGenBuffers(1, &m_PatriclePeriodVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_PatriclePeriodVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * totalfloatCountSingle, verticesPeriodTime, GL_STATIC_DRAW);
+	delete[] verticesPeriodTime;
+
+	float* verticesAmpTime = NULL;
+	verticesAmpTime = new float[totalfloatCountSingle];
+
+	index = 0;
+	for (int i = 0; i < numParticleCount; ++i)
+	{
+		float Amp = 1.f * ((float)rand()) / ((float)RAND_MAX) * 1.f; // 라이프타임 수정은 여기서!
+		verticesAmpTime[index] = Amp; index++;
+		verticesAmpTime[index] = Amp; index++;
+		verticesAmpTime[index] = Amp; index++;
+		verticesAmpTime[index] = Amp; index++;
+		verticesAmpTime[index] = Amp; index++;
+		verticesAmpTime[index] = Amp; index++;
+	}
+	glGenBuffers(1, &m_ParticleAmpVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleAmpVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * totalfloatCountSingle, verticesAmpTime, GL_STATIC_DRAW);
+	delete[] verticesAmpTime;
+
+
 
 }

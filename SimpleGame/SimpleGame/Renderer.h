@@ -40,11 +40,13 @@ private:
 	GLuint m_VBORect = 0;
 	GLuint m_SolidRectShader = 0;
 
-	GLuint m_testVBO = 0;
-	GLuint m_testVBO1 = 0;
-	GLuint m_colorVBO = 0;
-	GLuint m_ParticleEmitTimeVBO = 0;
-	GLuint m_ParticleLifeTimeVBO = 0;
+	GLuint m_testVBO = -1;
+	GLuint m_testVBO1 = -1;
+	GLuint m_colorVBO = -1;
+	GLuint m_ParticleEmitTimeVBO = -1;
+	GLuint m_ParticleLifeTimeVBO = -1;
+	GLuint m_PatriclePeriodVBO = -1;
+	GLuint m_ParticleAmpVBO = -1;
 
 	float scale = 0.2f;
 	float g_time = 0;
