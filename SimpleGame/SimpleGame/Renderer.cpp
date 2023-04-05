@@ -24,7 +24,7 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 
 	//Create VBOs
 	CreateVertexBufferObjects();
-	CreateParticleVBO(10);
+	CreateParticleVBO(1000);
 	if (m_SolidRectShader > 0 && m_VBORect > 0)
 	{
 		m_Initialized = true;
@@ -442,7 +442,7 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 	index = 0;
 	for (int i = 0; i < numParticleCount; ++i)
 	{
-		float Amp = 1.f * ((float)rand()) / ((float)RAND_MAX) * 1.f; // 라이프타임 수정은 여기서!
+		float Amp = 1.f * (2.f * ((float)rand()) / ((float)RAND_MAX) - 1.f); // 라이프타임 수정은 여기서!
 		verticesAmpTime[index] = Amp; index++;
 		verticesAmpTime[index] = Amp; index++;
 		verticesAmpTime[index] = Amp; index++;
