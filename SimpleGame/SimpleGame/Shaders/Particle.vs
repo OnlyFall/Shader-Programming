@@ -2,6 +2,8 @@
 
 in vec3 a_Position;
 in vec3 a_Vel;
+in vec4 a_Color;
+
 in float a_EmitTime;
 in float a_LifeTime;
 in float a_Period;
@@ -16,7 +18,10 @@ const vec3 c_Vel = vec3(0.0, -0.8, 0.0);
 const float c_resetTime = 2.0;
 const float c_PI = 3.141592;
 const float c_Amp = 0.5;
-const float c_Period = 2;
+const float c_Period = 2.0;
+
+
+out vec4 v_Color;
 
 //===========================================================================================================================================================================
 vec4 P1()
@@ -73,4 +78,6 @@ vec4 GraphSin() // 시험문제로 나올 예정!!
 void main()
 {
 	gl_Position = GraphSin();
+
+	v_Color = a_Color;
 }
