@@ -7,6 +7,7 @@ it under the terms of the What The Hell License. Do it plz.
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY.
 */
+
 #include "stdafx.h"
 #include <iostream>
 #include "Dependencies\glew.h"
@@ -14,17 +15,18 @@ but WITHOUT ANY WARRANTY.
 
 #include "Renderer.h"
 
-Renderer* g_Renderer = NULL;
+Renderer *g_Renderer = NULL;
 
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Renderer Test
 	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
-	//g_Renderer->class0310_Rendering()
-	g_Renderer->DrawParticle();
+	//g_Renderer->Class0310_Rendering();
+	//g_Renderer->DrawParticle();
+	g_Renderer->DrawFragmentSandbox();
 	glutSwapBuffers();
 }
 
@@ -48,7 +50,7 @@ void SpecialKeyInput(int key, int x, int y)
 	RenderScene();
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 	// Initialize GL things
 	glutInit(&argc, argv);
@@ -84,6 +86,6 @@ int main(int argc, char** argv)
 
 	delete g_Renderer;
 
-	return 0;
+    return 0;
 }
 
