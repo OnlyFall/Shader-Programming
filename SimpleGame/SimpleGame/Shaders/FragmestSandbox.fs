@@ -36,7 +36,8 @@ void rader()
 	
 	vec2 newValue = v_UV - u_Point;
 	float d = length(newValue);
-	float ring_mask = ceil(sin(4*c_PI*d - 13 * u_Time) - 0.9);
+	float value = sin(4*c_PI*d - 13 * u_Time) - 0.9;
+	float ring_mask = ceil(value);
 
 
 	float obj_mask = 0.0f;
@@ -50,7 +51,7 @@ void rader()
 			obj_mask += 1.0;
 		}
 	}
-	FragColor = vec4(ring_mask * obj_mask);
+	FragColor = vec4(ring_mask * obj_mask + 10 * value);
 }
 
 void main()
