@@ -10,6 +10,10 @@ in float a_Period;
 in float a_Amp;
 in float a_Value;
 
+in vec2 a_UV;
+
+varying vec2 v_Texcoord;
+
 uniform float u_Time;
 uniform vec3 u_Accel;
 
@@ -20,7 +24,7 @@ const float c_PI = 3.141592;
 const float c_Amp = 0.5;
 const float c_Period = 2.0;
 
-out vec2 v_Texcoord;
+out vec2 v_UV;
 out vec4 v_Color;
 
 //===========================================================================================================================================================================
@@ -76,6 +80,7 @@ void GraphSin() // 시험문제로 나올 예정!!
 
 	gl_Position = newPos;
 	v_Color = vec4(a_Color.rgb, a_Color.a * alpha);
+	v_UV = a_UV;
 }
 //===========================================================================================================================================================================
 
