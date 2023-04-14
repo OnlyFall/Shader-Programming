@@ -684,7 +684,16 @@ void Renderer::DrawFragmentSandbox()
 
 	float tx = 1.f * ((float)rand() / (float)RAND_MAX);
 	float ty = 1.f * ((float)rand() / (float)RAND_MAX);
-	glUniform2f(glGetUniformLocation(m_FragmentSandboxShader, "u_Pos"), tx, ty);
+	int pointUloc = glGetUniformLocation(program, "u_Point");
+	glUniform2f(pointUloc, 0.5, 0.5);
+
+	int pointsUloc = glGetUniformLocation(program, "u_Points");
+	float points[] = { 0.1, 0.1, 0.5, 0.5, 0.8, 0.8 };
+	glUniform2fv(pointsUloc, 3, points);
+
+	int timeLoc = glGetUniformLocation(program, "u_Time");
+	glUniform1f(timeLoc, g_time);
+	g_time += 0.00016;
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
