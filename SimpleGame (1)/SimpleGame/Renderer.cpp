@@ -739,6 +739,10 @@ void Renderer::DrawVertexSandbox()
 	glEnableVertexAttribArray(posLoc);
 	glBindBuffer(GL_ARRAY_BUFFER, m_HorizontalLineVBO);
 	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	int timeLoc = glGetUniformLocation(program, "u_Time");
+	glUniform1f(timeLoc, g_time);
+	g_time += 0.0016;
 	glDrawArrays(GL_LINE_STRIP, 0, m_HorizontalLineVertexCount);
 }
 
