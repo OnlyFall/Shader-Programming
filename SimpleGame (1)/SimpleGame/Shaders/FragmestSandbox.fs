@@ -67,12 +67,22 @@ void uvTest()
 
 void sinGraph()
 {
-	float newInput = v_UV.x * 2 * c_PI + c_PI;
-	float sinValue = (sin(newInput) + 1.0) / 2.0;
-
 	FragColor = vec4(0);
-	if(v_UV.y > sinValue)
-		FragColor = vec4(1);
+	for(int i = 0; i < 5; i++)
+	{
+		float newTime = u_Time + i * 0.2;
+		vec2 newUV = vec2(v_UV.x, 2.0 * (v_UV.y - 0.5));
+
+	float newInput = v_UV.x * 2 * c_PI + c_PI;
+	float sinValue = v_UV.x * sin(newInput - newTime * 20);
+
+	float width = 0.005;
+	float newAlpha = 1.0 - v_UV.x;
+	float newLines = sin(v_UV.x * 200.0 - newTime * 50);
+
+	if(newUV.y > sinValue && newUV.y < sinValue + width)
+		FragColor += vec4(1.0 * newAlpha * newLines);
+	}
 }
 
 void main()
