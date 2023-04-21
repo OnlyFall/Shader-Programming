@@ -750,7 +750,7 @@ void Renderer::DrawVertexSandbox()
 
 	for (int i = 0; i < 5; ++i)
 	{
-		glUniform1f(timeLoc, g_time + ((float)i *  0.8));
+		glUniform1f(timeLoc, g_time + ((float)i *  0.2));
 		glDrawArrays(GL_LINE_STRIP, 0, m_HorizontalLineVertexCount);
 	}
 

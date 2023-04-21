@@ -54,8 +54,31 @@ void rader()
 	FragColor = vec4(ring_mask * obj_mask + 10 * value);
 }
 
+void uvTest()
+{
+	FragColor = vec4(0);
+	float powValue = 10;
+	float sinResultX = pow(sin(v_UV.x * 10 * c_PI), powValue);
+	float sinResultY = pow(sin(v_UV.y * 10 * c_PI), powValue);
+	float finalResult = max(sinResultX, sinResultY);
+
+	FragColor = vec4(finalResult);
+}
+
+void sinGraph()
+{
+	float newInput = v_UV.x * 2 * c_PI + c_PI;
+	float sinValue = (sin(newInput) + 1.0) / 2.0;
+
+	FragColor = vec4(0);
+	if(v_UV.y > sinValue)
+		FragColor = vec4(1);
+}
+
 void main()
 {
-	rader();
+	sinGraph();
+	//uvTest();
+	//rader();
 	//Circle();
 }
