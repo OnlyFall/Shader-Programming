@@ -57,8 +57,8 @@ private:
 	GLuint m_FragmentSandboxShader = 0;
 	GLuint m_FragmentSandboxVBO = 0;
 
-	GLuint	m_AlphaClearShader = 0;
-	GLuint	m_AlphaClearVBO = 0;
+	GLuint m_alphaClearVBO = 0;
+	GLuint m_alphaClearShader = 0;
 
 	// ¶ÇÇÔ
 	GLuint m_VertexSandboxShader = 0;

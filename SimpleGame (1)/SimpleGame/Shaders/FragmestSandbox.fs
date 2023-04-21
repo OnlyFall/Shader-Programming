@@ -36,7 +36,7 @@ void rader()
 	
 	vec2 newValue = v_UV - vec2(0.5, 0.5);
 	float d = length(newValue);
-	float value = sin(4*c_PI*d - 13 * u_Time) - 0.9;
+	float value = sin(2*c_PI*d - 13 * u_Time) - 0.9;
 	float ring_mask = ceil(value);
 
 
@@ -46,7 +46,7 @@ void rader()
 		vec2 temp = v_UV - u_Points[i];
 		float d = length(temp);
 
-		if(d < 0.05f)
+		if(d < 0.1)
 		{
 			obj_mask += 1.0;
 		}

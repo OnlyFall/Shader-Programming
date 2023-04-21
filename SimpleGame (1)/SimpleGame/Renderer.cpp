@@ -22,7 +22,7 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	m_SolidRectShader = CompileShaders("./Shaders/SolidRect.vs", "./Shaders/SolidRect.fs");
 	m_ParticleShader = CompileShaders("./Shaders/Particle.vs", "./Shaders/Particle.fs");
 	m_FragmentSandboxShader = CompileShaders("./Shaders/FragmestSandbox.vs", "./Shaders/FragmestSandbox.fs");
-	m_AlphaClearShader = CompileShaders("./Shaders/AlphaClear.vs", "./Shaders/AlphaClear.fs");
+	m_alphaClearShader = CompileShaders("./Shaders/AlphaClear.vs", "./Shaders/AlphaClear.fs");
 	m_VertexSandboxShader = CompileShaders("./Shaders/VertexSandbox.vs", "./Shaders/VertexSandbox.fs");
 	//Create VBOs
 	CreateVertexBufferObjects();
@@ -70,18 +70,18 @@ void Renderer::CreateVertexBufferObjects()
 	float rect2[]
 		=
 	{
-		-1, -1, 0,
-		-1, 1, 0,
-		1, 1, 0,//Triangle1
-		-1, -1, 0,
-		1, 1, 0,
-		1, -1, 0 //Triangle2
+		-1.f, -1.f, 0.f,
+		-1.f, 1.f, 0.f,
+		1.f, 1.f, 0.f,//Triangle1
+		-1.f, -1.f, 0.f,
+		1.f, 1.f, 0.f,
+		1.f, -1.f, 0.f //Triangle2
 	};
-	glGenBuffers(1, &m_AlphaClearVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_AlphaClearVBO);
+	glGenBuffers(1, &m_alphaClearVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_alphaClearVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(rect2), rect2, GL_STATIC_DRAW);
 
-	m_HorizontalLineVertexCount = 100;
+	m_HorizontalLineVertexCount = 50;
 	float* verticesLine = new float[m_HorizontalLineVertexCount * 3];
 	float gap = 2.f / ((float)(m_HorizontalLineVertexCount - 1.f));
 	int index = 0;
@@ -735,6 +735,9 @@ void Renderer::DrawVertexSandbox()
 	GLuint program = m_VertexSandboxShader;
 	glUseProgram(program);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	int posLoc = glGetAttribLocation(program, "a_Position");
 	glEnableVertexAttribArray(posLoc);
 	glBindBuffer(GL_ARRAY_BUFFER, m_HorizontalLineVBO);
@@ -744,11 +747,19 @@ void Renderer::DrawVertexSandbox()
 	glUniform1f(timeLoc, g_time);
 	g_time += 0.0016;
 	glDrawArrays(GL_LINE_STRIP, 0, m_HorizontalLineVertexCount);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		glUniform1f(timeLoc, g_time + ((float)i *  0.8));
+		glDrawArrays(GL_LINE_STRIP, 0, m_HorizontalLineVertexCount);
+	}
+
+	glDisable(GL_BLEND);
 }
 
 void Renderer::DrawAlphaClear() // 이거도 해야됨
 {
-	GLuint shader = m_AlphaClearShader;
+	GLuint shader = m_alphaClearShader;
 	glUseProgram(shader);
 
 	glEnable(GL_BLEND);
@@ -756,8 +767,8 @@ void Renderer::DrawAlphaClear() // 이거도 해야됨
 
 	int posLoc = glGetAttribLocation(shader, "a_Position");
 	glEnableVertexAttribArray(posLoc);
-	glBindBuffer(GL_ARRAY_BUFFER, m_AlphaClearVBO);
-	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, m_alphaClearVBO);
+	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
