@@ -34,9 +34,9 @@ void Circles()
 void rader()
 {
 	
-	vec2 newValue = v_UV - vec2(0.5, 0.5);
+	vec2 newValue = v_UV - vec2(0.5, 1);
 	float d = length(newValue);
-	float value = sin(2*c_PI*d - 13 * u_Time) - 0.9;
+	float value = sin(2*c_PI*d - 13 * u_Time) - 0.93;
 	float ring_mask = ceil(value);
 
 
@@ -46,7 +46,7 @@ void rader()
 		vec2 temp = v_UV - u_Points[i];
 		float d = length(temp);
 
-		if(d < 0.1)
+		if(d < 0.05)
 		{
 			obj_mask += 1.0;
 		}
@@ -87,8 +87,8 @@ void sinGraph()
 
 void main()
 {
-	sinGraph();
+	//sinGraph();
 	//uvTest();
-	//rader();
+	rader();
 	//Circle();
 }

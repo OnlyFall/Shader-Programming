@@ -725,7 +725,7 @@ void Renderer::DrawFragmentSandbox() // 이건 구현해야됨 왜 안될까?
 
 	int timeLoc = glGetUniformLocation(program, "u_Time");
 	glUniform1f(timeLoc, g_time);
-	g_time += 0.00016;
+	g_time += 0.0016;
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
