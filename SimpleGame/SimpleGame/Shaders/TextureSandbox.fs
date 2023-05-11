@@ -3,8 +3,9 @@
 layout(location=0) out vec4 FragColor;
 
 uniform sampler2D u_TexSampler;
-in vec2 v_TexPos;
+uniform vec2 u_XYRepeat;
 
+in vec2 v_TexPos;
 
 void def()
 {
@@ -55,8 +56,8 @@ void example3()
 
 void P5()
 {
-	float x_repeat = 4.0;
-	float y_repeat = 2.0;
+	float x_repeat = u_XYRepeat.x;
+	float y_repeat = u_XYRepeat.y;
 
 	float dx = v_TexPos.x * x_repeat;
 	float x = dx + floor((1.0 - v_TexPos.y) * y_repeat) * 0.5;
@@ -67,7 +68,21 @@ void P5()
 	FragColor = texture(u_TexSampler, newTexPos);
 }
 
+void P6()
+{
+	//float x_repeat = u_XYRepeat.x;
+	//float y_repeat = u_XYRepeat.y;
+
+	float dy = v_TexPos.y * 2.0;
+	float x = fract(v_TexPos.x * 2.0);
+	float y = dy + floor(v_TexPos.x * 2.0) * 0.5;
+	
+	vec2 newTexPos = vec2(x, y);
+	
+	FragColor = texture(u_TexSampler, newTexPos);
+}
+
 void main()
 {
-	P5();
+	P6();
 }
