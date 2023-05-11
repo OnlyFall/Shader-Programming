@@ -386,7 +386,7 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 	float* vertices = NULL;
 	vertices = new float[totalFloatCount];
 
-	float particleSize = 0.1f;
+	float particleSize = 0.01f;
 
 	int index = 0;
 	for (int i = 0; i < numParticleCount; i++)

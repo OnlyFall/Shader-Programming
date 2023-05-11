@@ -53,9 +53,21 @@ void example3()
 
 }
 
+void P5()
+{
+	float x_repeat = 4.0;
+	float y_repeat = 2.0;
 
+	float dx = v_TexPos.x * x_repeat;
+	float x = dx + floor((1.0 - v_TexPos.y) * y_repeat) * 0.5;
+	float y = fract(v_TexPos.y * y_repeat);
+	
+	vec2 newTexPos = vec2(x, y);
+	
+	FragColor = texture(u_TexSampler, newTexPos);
+}
 
 void main()
 {
-	example2();
+	P5();
 }

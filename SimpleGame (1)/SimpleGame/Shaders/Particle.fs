@@ -19,7 +19,8 @@ void Circles()
 
 void main()
 {
+	FragColor = vec4(1);
 	//FragColor = v_Color;
 	//FragColor = vec4(v_UV, 0, 1);
-	Circles();
+	//Circles();
 }
