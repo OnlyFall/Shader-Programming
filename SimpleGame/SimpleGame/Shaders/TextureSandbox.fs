@@ -60,7 +60,7 @@ void P5()
 	float y_repeat = u_XYRepeat.y;
 
 	float dx = v_TexPos.x * x_repeat;
-	float x = dx + floor((1.0 - v_TexPos.y) * y_repeat) * 0.5;
+	float x = fract(dx + floor((1.0 - v_TexPos.y) * y_repeat) * 0.5);
 	float y = fract(v_TexPos.y * y_repeat);
 	
 	vec2 newTexPos = vec2(x, y);
@@ -70,12 +70,12 @@ void P5()
 
 void P6()
 {
-	//float x_repeat = u_XYRepeat.x;
-	//float y_repeat = u_XYRepeat.y;
+	float x_repeat = u_XYRepeat.x;
+	float y_repeat = u_XYRepeat.y;
 
-	float dy = v_TexPos.y * 2.0;
+	float dy = v_TexPos.y * 3.0;
 	float x = fract(v_TexPos.x * 2.0);
-	float y = dy + floor(v_TexPos.x * 2.0) * 0.5;
+	float y = fract(dy + floor(v_TexPos.x * 2.0) * 0.5);
 	
 	vec2 newTexPos = vec2(x, y);
 	
