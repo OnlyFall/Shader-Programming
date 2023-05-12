@@ -113,10 +113,8 @@ void Multi_Example()
 	
 	
 	vec2 newTexPos = vec2(x, y);
-	if(x <= 1)
-		FragColor = texture(u_MultiSampler[0], fract(newTexPos));
-	else
-		FragColor = texture(u_MultiSampler[1], fract(newTexPos));
+
+	FragColor = texture(u_MultiSampler[int(floor(x))], fract(newTexPos));
 }
 
 void main()
