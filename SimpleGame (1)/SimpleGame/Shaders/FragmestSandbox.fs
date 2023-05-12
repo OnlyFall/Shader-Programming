@@ -34,9 +34,9 @@ void Circles()
 void rader()
 {
 	
-	vec2 newValue = v_UV - vec2(0.5, 1);
+	vec2 newValue = v_UV - u_Point;
 	float d = length(newValue);
-	float value = sin(2*c_PI*d - 13 * u_Time) - 0.93;
+	float value = sin(4*c_PI*d - 13 * u_Time) - 0.9;
 	float ring_mask = ceil(value);
 
 
@@ -46,7 +46,7 @@ void rader()
 		vec2 temp = v_UV - u_Points[i];
 		float d = length(temp);
 
-		if(d < 0.05)
+		if(d < 0.1f)
 		{
 			obj_mask += 1.0;
 		}
@@ -54,41 +54,8 @@ void rader()
 	FragColor = vec4(ring_mask * obj_mask + 10 * value);
 }
 
-void uvTest()
-{
-	FragColor = vec4(0);
-	float powValue = 10;
-	float sinResultX = pow(sin(v_UV.x * 10 * c_PI), powValue);
-	float sinResultY = pow(sin(v_UV.y * 10 * c_PI), powValue);
-	float finalResult = max(sinResultX, sinResultY);
-
-	FragColor = vec4(finalResult);
-}
-
-void sinGraph()
-{
-	FragColor = vec4(0);
-	for(int i = 0; i < 5; i++)
-	{
-		float newTime = u_Time + i * 0.2;
-		vec2 newUV = vec2(v_UV.x, 2.0 * (v_UV.y - 0.5));
-
-	float newInput = v_UV.x * 2 * c_PI + c_PI;
-	float sinValue = v_UV.x * sin(newInput - newTime * 20);
-
-	float width = 0.005;
-	float newAlpha = 1.0 - v_UV.x;
-	float newLines = sin(v_UV.x * 200.0 - newTime * 50);
-
-	if(newUV.y > sinValue && newUV.y < sinValue + width)
-		FragColor += vec4(1.0 * newAlpha * newLines);
-	}
-}
-
 void main()
 {
-	//sinGraph();
-	//uvTest();
 	rader();
 	//Circle();
 }

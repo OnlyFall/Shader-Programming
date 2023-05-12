@@ -20,6 +20,9 @@ public:
 	void DrawFragmentSandbox();
 	void DrawAlphaClear();
 	void DrawVertexSandbox();
+	void DrawTextureSandbox();
+
+	void DrawTest();
 private:
 	void Initialize(int windowSizeX, int windowSizeY);
 	bool ReadFile(char* filename, std::string *target);
@@ -28,8 +31,11 @@ private:
 	void CreateVertexBufferObjects();
 	void GetGLPosition(float x, float y, float *newX, float *newY);
 	void Class0310();
-	void CreateParticleVBO(int numParticleCount);
+	
+	void CreateTexures();
+	GLuint CreatePngTexture(char* filePath, GLuint samplingMethod);
 
+	void CreateParticleVBO(int numParticleCount);
 	GLuint m_ParticleShader = -1;
 	GLuint m_ParticleVBO = -1;
 	GLuint m_ParticleVelVBO = -1;
@@ -54,15 +60,37 @@ private:
 	GLuint m_testVBO1 = 0;
 	GLuint m_ColorVBO = 0;
 
+	//for fragment sandbox
 	GLuint m_FragmentSandboxShader = 0;
 	GLuint m_FragmentSandboxVBO = 0;
 
-	GLuint m_alphaClearVBO = 0;
-	GLuint m_alphaClearShader = 0;
+	//for trail
+	GLuint m_AlphaClearShader = 0;
+	GLuint m_AlphaClearVBO = 0;
 
-	// 또함
+	//for vertex anim
 	GLuint m_VertexSandboxShader = 0;
 	GLuint m_HorizontalLineVBO = 0;
 	GLuint m_HorizontalLineVertexCount = 0;
+
+	GLuint m_TextureSandboxShader = 0;
+	GLuint m_TextureSandboxVBO = 0;
+	GLuint m_CheckerBoardTexture = 0;
+	GLuint m_RGBTexture = 0;
+
+	// 텍스쳐 6개
+
+	GLuint m_Texture[6]{};
+
+	GLuint m_0Texture = 0;
+	GLuint m_1Texture = 0;
+	GLuint m_2Texture = 0;
+	GLuint m_3Texture = 0;
+	GLuint m_4Texture = 0;
+	GLuint m_5Texture = 0;
+
+	// 시험 연습용
+	GLuint m_testShader = 0;
+	GLuint m_practiceVBO = -1;
 };
 

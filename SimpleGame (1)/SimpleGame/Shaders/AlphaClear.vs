@@ -1,6 +1,7 @@
 #version 330
 
-in vec3 a_Position; //ATTRIBUTE (VS INPUT)
+in vec3 a_Position;
+
 
 void main()
 {

@@ -22,17 +22,18 @@ int g_WindowSizeY = 1024;
 
 void RenderScene(void)
 {
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	g_Renderer->DrawAlphaClear();
-
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClear(GL_DEPTH_BUFFER_BIT);
+	//g_Renderer->DrawAlphaClear();
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	// Renderer Test
 	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
 	//g_Renderer->Class0310_Rendering();
 	//g_Renderer->DrawParticle();
-
 	//g_Renderer->DrawFragmentSandbox();
-	g_Renderer->DrawVertexSandbox();
+	//g_Renderer->DrawVertexSandbox();
+	g_Renderer->DrawTextureSandbox();
+	//g_Renderer->DrawTest();
 	glutSwapBuffers();
 }
 

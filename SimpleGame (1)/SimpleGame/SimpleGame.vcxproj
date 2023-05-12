@@ -174,12 +174,14 @@
   <ItemGroup>
     <None Include="Shaders\AlphaClear.fs" />
     <None Include="Shaders\AlphaClear.vs" />
-    <None Include="Shaders\FragmestSandbox.fs" />
-    <None Include="Shaders\FragmestSandbox.vs" />
+    <None Include="Shaders\FragmentSandbox.fs" />
+    <None Include="Shaders\FragmentSandbox.vs" />
     <None Include="Shaders\Particle.fs" />
     <None Include="Shaders\Particle.vs" />
     <None Include="Shaders\SolidRect.fs" />
     <None Include="Shaders\SolidRect.vs" />
+    <None Include="Shaders\TextureSandbox.fs" />
+    <None Include="Shaders\TextureSandbox.vs" />
     <None Include="Shaders\VertexSandbox.fs" />
     <None Include="Shaders\VertexSandbox.vs" />
   </ItemGroup>
