@@ -43,6 +43,8 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	m_4Texture = CreatePngTexture("./Texture4.png", GL_NEAREST);
 	m_5Texture = CreatePngTexture("./Texture5.png", GL_NEAREST);
 
+	m_MergeTexture = CreatePngTexture("./AllInOne.png", GL_NEAREST);
+
 	CreateParticleVBO(10000);
 
 	if (m_SolidRectShader > 0 && m_VBORect > 0)
@@ -453,15 +455,23 @@ void Renderer::DrawTextureSandbox()
 	glBindTexture(GL_TEXTURE_2D, m_4Texture);
 	glActiveTexture(GL_TEXTURE5);
 	glBindTexture(GL_TEXTURE_2D, m_5Texture);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, m_MergeTexture);
 
 	int texID[] = { 0, 1 };
 	GLuint samplerULoc = glGetUniformLocation(shader, "u_MultiSampler");
 	glUniform1iv(samplerULoc, 2, texID);
 
+	GLuint stepULoc = glGetUniformLocation(shader, "u_Step");
+	glUniform1i(stepULoc, ((int)g_time) % 6);
+
+	samplerULoc = glGetUniformLocation(shader, "u_TexSampler");
+	glUniform1i(samplerULoc, 6);
+
+
 	GLuint repeatULoc = glGetUniformLocation(shader, "u_XYRepeat");
 	glUniform2f(repeatULoc, 4.f, 4.f);
 	g_time += 0.08;
-	Sleep(10);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 

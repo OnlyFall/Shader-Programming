@@ -88,6 +88,7 @@ private:
 	GLuint m_3Texture = 0;
 	GLuint m_4Texture = 0;
 	GLuint m_5Texture = 0;
+	GLuint m_MergeTexture = 0;
 
 	// 시험 연습용
 	GLuint m_testShader = 0;
