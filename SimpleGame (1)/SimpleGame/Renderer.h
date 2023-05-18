@@ -93,5 +93,7 @@ private:
 	// 시험 연습용
 	GLuint m_testShader = 0;
 	GLuint m_practiceVBO = -1;
+
+	GLuint m_ParticleTexture = 0;
 };
 

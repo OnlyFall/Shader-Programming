@@ -35,6 +35,8 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 
 	//Load Textures
 	m_RGBTexture = CreatePngTexture("./rgb.png", GL_NEAREST);
+
+	m_ParticleTexture = CreatePngTexture("./rgb.png", GL_NEAREST);
 	
 	m_0Texture = CreatePngTexture("./Texture0.png", GL_NEAREST);
 	m_1Texture = CreatePngTexture("./Texture1.png", GL_NEAREST);
@@ -104,7 +106,7 @@ void Renderer::CreateVertexBufferObjects()
 		=
 	{
 		-1.f, -1.f, 0.f, //x,y,z
-		-1.f, 1.f, 0.f, 
+		-1.f, 1.f, 0.f,  
 		1.f, 1.f, 0.f,  //Triangle1
 		-1.f, -1.f, 0.f,  
 		1.f, 1.f, 0.f, 
@@ -406,6 +408,11 @@ void Renderer::DrawParticle()
 
 	g_time += 0.01;
 
+	int texULoc = glGetUniformLocation(program, "u_Texture");
+	glUniform1i(texULoc, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_ParticleTexture);
+
 	glDrawArrays(GL_TRIANGLES, 0, m_ParticleVertexCount);
 
 	glDisable(GL_BLEND);
@@ -465,6 +472,7 @@ void Renderer::DrawTextureSandbox()
 	GLuint stepULoc = glGetUniformLocation(shader, "u_Step");
 	glUniform1i(stepULoc, ((int)g_time) % 6);
 
+	std::cout << ((int)g_time) % 6 << std::endl;
 	samplerULoc = glGetUniformLocation(shader, "u_TexSampler");
 	glUniform1i(samplerULoc, 6);
 

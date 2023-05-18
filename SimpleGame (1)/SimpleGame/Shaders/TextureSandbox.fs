@@ -101,7 +101,7 @@ void P7()
 void MultiTexture()
 {
 	float x = v_TexPos.x;
-	float y = u_Step + v_TexPos.y / 6;
+	float y = u_Step + (v_TexPos.y / 6);
 	
 	vec2 newTexPos = vec2(x, y);
 	
