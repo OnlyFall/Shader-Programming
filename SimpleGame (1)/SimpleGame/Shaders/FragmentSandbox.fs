@@ -8,6 +8,8 @@ uniform vec2 u_Point;
 uniform vec2 u_Points[3];
 uniform float u_Time;
 
+uniform sampler2D u_Texture;
+
 const float c_PI = 3.141592;
 
 void circle()
@@ -82,9 +84,55 @@ void sinGraph()
 	}
 }
 
+void flag()
+{
+	float finalColor = 0;
+	for(int i = 0; i < 10; i++)
+	{
+		float newTime = u_Time + i * 0.2;
+		float newColor = v_UV.x * 0.5 *
+							sin(v_UV.x * c_PI * 2 - 10 * newTime);
+		float sinValue = sin(v_UV.x * c_PI * 2 * 10 - 500 * newTime);
+		float width = 0.01 * v_UV.x * 5 + 0.001;
+
+		if(2.0 * (v_UV.y - 0.5) > newColor && 2.0 * (v_UV.y - 0.5) < newColor + width)
+		{
+			finalColor += 1 * sinValue * (1.0 - v_UV.x);
+		}
+		else
+		{
+		}
+	}
+
+	FragColor = vec4(finalColor);
+}
+
+void realFlag()
+{
+	float period = (v_UV.x + 1.0) * 1.0;
+	float xValue = v_UV.x * 2.0 * c_PI * period;
+	float yValue = ((1.0 - v_UV.y) - 0.5) * 2.0;
+	float sinValue = 0.25 * sin(xValue - 25 * u_Time);
+	
+	if(sinValue * v_UV.x + 0.75 > yValue && sinValue * v_UV.x - 0.75 < yValue)
+	{
+		float vX = v_UV.x;
+		float yWidth = 1.5;
+		float yDistance = yValue - (sinValue * v_UV.x - 0.75);
+		float vY = 1.0 - yDistance / yWidth;
+		FragColor = texture(u_Texture, vec2(vX, vY));
+		//FragColor = vec4(vX, vY, 0, 1);
+	}
+	else
+	{
+		FragColor = vec4(0);
+	}
+}
+
 void main()
 {
-	radar();
+	//radar();
 	//UVTest();
 	//sinGraph();
+	realFlag();
 }
