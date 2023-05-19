@@ -21,6 +21,8 @@ public:
 	void DrawAlphaClear();
 	void DrawVertexSandbox();
 	void DrawTextureSandbox();
+	void DrawVSFrag();
+	void DrawGridMesh();
 
 	void DrawTest();
 private:
@@ -34,6 +36,7 @@ private:
 	
 	void CreateTexures();
 	GLuint CreatePngTexture(char* filePath, GLuint samplingMethod);
+	void CreateGridMesh();
 
 	void CreateParticleVBO(int numParticleCount);
 	GLuint m_ParticleShader = -1;
@@ -95,5 +98,10 @@ private:
 	GLuint m_practiceVBO = -1;
 
 	GLuint m_ParticleTexture = 0;
+	GLuint m_ExplosionTexture = 0;
+
+	GLuint m_GridMeshShader = 0;
+	GLuint m_GridMeshVBO = 0;
+	GLuint m_GridMeshVertexCount = 0;
 };
 

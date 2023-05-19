@@ -5,6 +5,11 @@ in vec2 a_Texcoord;
 
 out vec2 v_UV;
 
+void Example()
+{
+	
+}
+
 void main()
 {
 	gl_Position = vec4(a_Position, 1.0);

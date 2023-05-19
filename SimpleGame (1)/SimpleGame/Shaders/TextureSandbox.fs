@@ -7,6 +7,7 @@ uniform sampler2D u_MultiSampler[2];
 uniform vec2 u_XYRepeat;
 
 uniform float u_Step;
+uniform float u_SeqNum;
 
 in vec2 v_TexPos;
 
@@ -120,7 +121,21 @@ void Multi_Example()
 	FragColor = texture(u_MultiSampler[int(floor(x))], fract(newTexPos));
 }
 
+void Explosion()
+{
+	float seqNum = u_SeqNum;
+	float nX = int(seqNum) % 8;
+	float nY = floor(seqNum / 8);
+
+	float x = nX / 8.0 + v_TexPos.x / 8.0;
+	float y = nY / 6.0 + v_TexPos.y / 6.0;
+	
+	vec2 newTexPos = vec2(x, y);
+	
+	FragColor = texture(u_TexSampler, newTexPos);
+}
+
 void main()
 {
-	MultiTexture();
+	Explosion();
 }

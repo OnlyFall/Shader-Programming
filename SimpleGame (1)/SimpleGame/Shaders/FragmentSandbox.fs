@@ -112,7 +112,7 @@ void realFlag()
 	float period = (v_UV.x + 1.0) * 1.0;
 	float xValue = v_UV.x * 2.0 * c_PI * period;
 	float yValue = ((1.0 - v_UV.y) - 0.5) * 2.0;
-	float sinValue = 0.25 * sin(xValue - 25 * u_Time);
+	float sinValue = 0.25 * sin(xValue - 2 * u_Time);
 	
 	if(sinValue * v_UV.x + 0.75 > yValue && sinValue * v_UV.x - 0.75 < yValue)
 	{
