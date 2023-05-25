@@ -37,6 +37,7 @@ private:
 	void CreateTexures();
 	GLuint CreatePngTexture(char* filePath, GLuint samplingMethod);
 	void CreateGridMesh();
+	void CreateFBOs();
 
 	void CreateParticleVBO(int numParticleCount);
 	GLuint m_ParticleShader = -1;
@@ -103,5 +104,13 @@ private:
 	GLuint m_GridMeshShader = 0;
 	GLuint m_GridMeshVBO = 0;
 	GLuint m_GridMeshVertexCount = 0;
+
+	// 2023-05-24 온라인강의 FBO
+	GLuint m_AFBOTexture = 0;
+	GLuint m_BFBOTexture = 0;
+	GLuint m_CFBOTexture = 0;
+	GLuint m_DepthRenderBuffer = 0;
+
+	GLuint m_A_FBO = 0;
 };
 
