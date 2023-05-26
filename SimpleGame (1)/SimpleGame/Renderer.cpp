@@ -508,6 +508,11 @@ void Renderer::DrawGridMesh()
 	glBindBuffer(GL_ARRAY_BUFFER, m_GridMeshVBO);
 	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
+	GLuint timeLoc = glGetUniformLocation(shader, "u_Time");
+	glUniform1f(timeLoc, g_time);
+	g_time += 0.008;
+
+
 	glDrawArrays(GL_LINE_STRIP, 0, m_GridMeshVertexCount);
 }
 
@@ -1032,8 +1037,8 @@ void Renderer::CreateGridMesh()
 	float targetPosX = 0.5f;
 	float targetPosY = 0.5f;
 
-	int pointCountX = 8;
-	int pointCountY = 8;
+	int pointCountX = 64;
+	int pointCountY = 64;
 
 	float width = targetPosX - basePosX;
 	float height = targetPosY - basePosY;
