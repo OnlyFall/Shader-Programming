@@ -42,7 +42,8 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 
 	m_ParticleTexture = CreatePngTexture("./rgb.png", GL_NEAREST);
 	m_ExplosionTexture = CreatePngTexture("./explosion.png", GL_NEAREST);
-	
+	m_rabbit_texture = CreatePngTexture("./keyescape.png", GL_NEAREST);
+
 	m_0Texture = CreatePngTexture("./Texture0.png", GL_NEAREST);
 	m_1Texture = CreatePngTexture("./Texture1.png", GL_NEAREST);
 	m_2Texture = CreatePngTexture("./Texture2.png", GL_NEAREST);
@@ -512,8 +513,12 @@ void Renderer::DrawGridMesh()
 	glUniform1f(timeLoc, g_time);
 	g_time += 0.008;
 
+	int uniformLoc_Texture = glGetUniformLocation(shader, "u_Texture");
+	glUniform1f(uniformLoc_Texture, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_rabbit_texture);
 
-	glDrawArrays(GL_LINE_STRIP, 0, m_GridMeshVertexCount);
+	glDrawArrays(GL_TRIANGLES, 0, m_GridMeshVertexCount);
 }
 
 void Renderer::DrawVertexSandbox()

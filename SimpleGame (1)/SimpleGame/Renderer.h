@@ -112,5 +112,8 @@ private:
 	GLuint m_DepthRenderBuffer = 0;
 
 	GLuint m_A_FBO = 0;
+
+	// 2023-05-26 추가 이미지
+	GLuint m_rabbit_texture = 0;
 };
 
