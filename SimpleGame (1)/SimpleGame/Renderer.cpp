@@ -511,7 +511,7 @@ void Renderer::DrawGridMesh()
 
 	GLuint timeLoc = glGetUniformLocation(shader, "u_Time");
 	glUniform1f(timeLoc, g_time);
-	g_time += 0.008;
+	g_time += 0.0008;
 
 	int uniformLoc_Texture = glGetUniformLocation(shader, "u_Texture");
 	glUniform1f(uniformLoc_Texture, 0);
