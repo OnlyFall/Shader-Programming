@@ -1,6 +1,10 @@
 #version 330
 
-layout(location=0) out vec4 FragColor;
+layout(location=0) out vec4 FragColor0;
+layout(location=1) out vec4 FragColor1;
+layout(location=2) out vec4 FragColor2;
+layout(location=3) out vec4 FragColor3;
+layout(location=4) out vec4 FragColor4;
 
 in vec2 v_UV;
 
@@ -12,17 +16,30 @@ uniform sampler2D u_Texture;
 
 const float c_PI = 3.141592;
 
+void test()
+{
+	float newValueX = v_UV.x * 10.0 * c_PI;
+	float newValueY = v_UV.y * 10.0 * c_PI;
+
+	float outColorGreyVertical = sin(newValueX);
+	float outColorGreyHorizontal = sin(newValueY);
+
+	float newColor = max(outColorGreyVertical, outColorGreyHorizontal);
+
+	FragColor0 = vec4(newColor);
+}
+
 void circle()
 {
 	vec2 newValue = v_UV - u_Points[2];
 	float d = length(newValue);
 	if(d < 0.1f)
 	{
-		FragColor = vec4(v_UV.xy, 0.0, 1.0);
+		FragColor1 = vec4(v_UV.xy, 0.0, 1.0);
 	}
 	else
 	{
-		FragColor = vec4(0);
+		FragColor1 = vec4(0);
 	}
 }
 
@@ -30,7 +47,7 @@ void circles()
 {
 	vec2 newValue = v_UV - u_Point;
 	float d = length(newValue);
-	FragColor = vec4(sin(30*d));
+	FragColor2 = vec4(sin(30*d));
 }
 
 void radar()
@@ -51,23 +68,23 @@ void radar()
 			obj_mask += 1.0;
 		}
 	}
-	FragColor = vec4(ring_mask*obj_mask + 10*value);
+	FragColor3 = vec4(ring_mask*obj_mask + 10*value);
 	
 }
 
 void UVTest()
 {
-	FragColor = vec4(0);
+	FragColor0 = vec4(0);
 	float powValue = 100.0;
 	float sinResultX = pow(sin(v_UV.x * 10 * c_PI), powValue);
 	float sinResultY = pow(sin(v_UV.y * 10 * c_PI), powValue);
 	float finalResult = max(sinResultX, sinResultY);
-	FragColor = vec4(finalResult);
+	FragColor0 = vec4(finalResult);
 }
 
 void sinGraph()
 {
-	FragColor = vec4(0);
+	FragColor0 = vec4(0);
 	for(int i=0; i<5; i++)
 	{
 		float newTime = u_Time + i*0.2;
@@ -79,7 +96,7 @@ void sinGraph()
 		float newLines = sin(v_UV.x*200.0 - newTime*50);
 		if(newUV.y > sinValue && newUV.y < sinValue+width)
 		{
-			FragColor += vec4(1.0*newAlpha*newLines);
+			FragColor0 += vec4(1.0*newAlpha*newLines);
 		}
 	}
 }
@@ -104,7 +121,7 @@ void flag()
 		}
 	}
 
-	FragColor = vec4(finalColor);
+	FragColor0 = vec4(finalColor);
 }
 
 void realFlag()
@@ -120,19 +137,20 @@ void realFlag()
 		float yWidth = 1.5;
 		float yDistance = yValue - (sinValue * v_UV.x - 0.75);
 		float vY = 1.0 - yDistance / yWidth;
-		FragColor = texture(u_Texture, vec2(vX, vY));
+		FragColor4 = texture(u_Texture, vec2(vX, vY));
 		//FragColor = vec4(vX, vY, 0, 1);
 	}
 	else
 	{
-		FragColor = vec4(0);
+		FragColor4 = vec4(0);
 	}
 }
 
 void main()
 {
-	//radar();
-	//UVTest();
-	//sinGraph();
+	test();
+	circle();
+	circles();
+	radar();
 	realFlag();
 }

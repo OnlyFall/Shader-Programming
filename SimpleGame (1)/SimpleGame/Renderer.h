@@ -107,6 +107,12 @@ private:
 
 	// 2023-05-24 온라인강의 FBO
 	GLuint m_AFBOTexture = 0;
+
+	GLuint m_AFBOAttach_1_Texture = 0;
+	GLuint m_AFBOAttach_2_Texture = 0;
+	GLuint m_AFBOAttach_3_Texture = 0;
+	GLuint m_AFBOAttach_4_Texture = 0;
+
 	GLuint m_BFBOTexture = 0;
 	GLuint m_CFBOTexture = 0;
 	GLuint m_DepthRenderBuffer = 0;
@@ -115,5 +121,10 @@ private:
 
 	// 2023-05-26 추가 이미지
 	GLuint m_rabbit_texture = 0;
+
+	// 2023-06-01 추가 DrawTexture
+	void DrawTexture(float x, float y, float scaleX, float scaleY, GLuint texID);
+	GLuint m_DrawTextureVBO = 0;
+	GLuint m_DrawTextureShader = 0;
 };
 
