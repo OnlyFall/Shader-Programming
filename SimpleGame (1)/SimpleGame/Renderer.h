@@ -25,6 +25,8 @@ public:
 	void DrawGridMesh();
 
 	void DrawTest();
+
+	void DrawResult();
 private:
 	void Initialize(int windowSizeX, int windowSizeY);
 	bool ReadFile(char* filename, std::string *target);
@@ -106,18 +108,23 @@ private:
 	GLuint m_GridMeshVertexCount = 0;
 
 	// 2023-05-24 온라인강의 FBO
-	GLuint m_AFBOTexture = 0;
+	
 
 	GLuint m_AFBOAttach_1_Texture = 0;
 	GLuint m_AFBOAttach_2_Texture = 0;
 	GLuint m_AFBOAttach_3_Texture = 0;
 	GLuint m_AFBOAttach_4_Texture = 0;
 
+	GLuint m_AFBOTexture = 0;
 	GLuint m_BFBOTexture = 0;
 	GLuint m_CFBOTexture = 0;
+	GLuint m_DFBOTexture = 0;
 	GLuint m_DepthRenderBuffer = 0;
 
 	GLuint m_A_FBO = 0;
+	GLuint m_B_FBO = 0;
+	GLuint m_C_FBO = 0;
+	GLuint m_D_FBO = 0;
 
 	// 2023-05-26 추가 이미지
 	GLuint m_rabbit_texture = 0;

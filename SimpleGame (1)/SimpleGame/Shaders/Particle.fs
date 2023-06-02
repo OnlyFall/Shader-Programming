@@ -31,5 +31,6 @@ void main()
 {
 	//FragColor = v_Color;
 	//FragColor = vec4(v_UV, 0, 1);
-	Textured();
+	circle();
+	//Textured();
 }

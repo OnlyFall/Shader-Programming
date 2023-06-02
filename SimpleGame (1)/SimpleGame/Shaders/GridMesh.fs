@@ -1,6 +1,8 @@
 #version 330
 
 layout(location=0) out vec4 FragColor;
+layout(location=1) out vec4 FragColor1;
+layout(location=2) out vec4 FragColor2;
 
 in float v_greyScale;
 in vec2 v_TexPos;
@@ -34,7 +36,7 @@ void realFlag()
 
 void main()
 {
-	//realFlag();
-	vec2 newTexPos = fract(v_TexPos * 2.0);
-	FragColor = v_greyScale * texture(u_Texture, newTexPos);
+	realFlag();
+	//vec2 newTexPos = fract(v_TexPos * 2.0);
+	//FragColor1 = v_greyScale * texture(u_Texture, newTexPos);
 }

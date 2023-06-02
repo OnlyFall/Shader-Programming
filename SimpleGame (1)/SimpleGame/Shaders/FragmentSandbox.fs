@@ -137,20 +137,20 @@ void realFlag()
 		float yWidth = 1.5;
 		float yDistance = yValue - (sinValue * v_UV.x - 0.75);
 		float vY = 1.0 - yDistance / yWidth;
-		FragColor4 = texture(u_Texture, vec2(vX, vY));
+		FragColor0 = texture(u_Texture, vec2(vX, vY));
 		//FragColor = vec4(vX, vY, 0, 1);
 	}
 	else
 	{
-		FragColor4 = vec4(0);
+		FragColor0 = vec4(0);
 	}
 }
 
 void main()
 {
-	test();
-	circle();
-	circles();
-	radar();
+	//test();
+	//circle();
+	//circles();
+	//radar();
 	realFlag();
 }

@@ -351,6 +351,10 @@ void Renderer::Class0310_Rendering()
 
 void Renderer::DrawParticle()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, m_B_FBO);
+	glViewport(0, 0, 1024, 1024);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	GLuint program = m_ParticleShader;
 	glUseProgram(program);
 
@@ -438,6 +442,7 @@ void Renderer::DrawParticle()
 
 	glDrawArrays(GL_TRIANGLES, 0, m_ParticleVertexCount);
 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDisable(GL_BLEND);
 }
 
@@ -458,6 +463,10 @@ void Renderer::DrawAlphaClear()
 
 void Renderer::DrawTextureSandbox()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, m_D_FBO);
+	glViewport(0, 0, 1024, 1024);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	GLuint shader = m_TextureSandboxShader;
 	glUseProgram(shader);
 
@@ -507,6 +516,8 @@ void Renderer::DrawTextureSandbox()
 	glUniform2f(repeatULoc, 4.f, 4.f);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
 }
 
 void Renderer::DrawVSFrag()
@@ -516,6 +527,12 @@ void Renderer::DrawVSFrag()
 
 void Renderer::DrawGridMesh()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, m_C_FBO);
+	glViewport(0, 0, 1024, 1024);
+	GLenum drawBuffers = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, &drawBuffers);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	GLuint shader = m_GridMeshShader;
 	glUseProgram(shader);
 	glEnable(GL_BLEND);
@@ -536,10 +553,17 @@ void Renderer::DrawGridMesh()
 	glBindTexture(GL_TEXTURE_2D, m_rabbit_texture);
 
 	glDrawArrays(GL_TRIANGLES, 0, m_GridMeshVertexCount);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	DrawTexture(-0.5, -0.5, 512, 512, m_CFBOTexture);
 }
 
 void Renderer::DrawVertexSandbox()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, m_C_FBO);
+	glViewport(0, 0, 1024, 1024);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	GLuint shader = m_VertexSandboxShader;
 	glUseProgram(shader);
 	glEnable(GL_BLEND);
@@ -561,6 +585,7 @@ void Renderer::DrawVertexSandbox()
 	}
 
 	glDisable(GL_BLEND);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 
@@ -580,12 +605,19 @@ void Renderer::DrawTest()
 	glDisable(GL_BLEND);
 }
 
+void Renderer::DrawResult()
+{
+	DrawTexture(-0.5, 0.5, 512, 512, m_AFBOTexture);
+	DrawTexture(0.5, 0.5, 512, 512, m_BFBOTexture);
+	DrawTexture(-0.5, -0.5, 512, 512, m_CFBOTexture);
+	DrawTexture(0.5, -0.5, 512, 512, m_DFBOTexture);
+}
+
 void Renderer::DrawFragmentSandbox()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
 	glViewport(0, 0, 1024, 1024);
-	GLenum drawBuffers[5] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4};
-	glDrawBuffers(5, drawBuffers);
+	GLenum drawBuffers = { GL_COLOR_ATTACHMENT0 };
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	GLuint shader = m_FragmentSandboxShader; 
@@ -600,8 +632,8 @@ void Renderer::DrawFragmentSandbox()
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_FragmentSandboxVBO);
 
-	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, sizeof(float)*5, 0);
-	glVertexAttribPointer(texLoc, 2, GL_FLOAT, GL_FALSE, sizeof(float)*5, (GLvoid*)(sizeof(float)*3));
+	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0);
+	glVertexAttribPointer(texLoc, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (GLvoid*)(sizeof(float)*3));
 
 	int pointUloc = glGetUniformLocation(shader, "u_Point");
 	glUniform2f(pointUloc, 0.3, 0.3);
@@ -610,7 +642,7 @@ void Renderer::DrawFragmentSandbox()
 	glUniform2fv(pointsUloc, 3, points);
 	int timeUloc = glGetUniformLocation(shader, "u_Time");
 	glUniform1f(timeUloc, g_time);
-	g_time += 0.008;
+	g_time += 0.004;
 
 	//
 	int uniformLoc_Texture = glGetUniformLocation(shader, "u_Texture");
@@ -622,10 +654,6 @@ void Renderer::DrawFragmentSandbox()
 
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	DrawTexture(-0.5, 0.5, 512, 512, m_AFBOAttach_1_Texture);
-	DrawTexture(0.5, 0.5, 512, 512, m_AFBOAttach_2_Texture);
-	DrawTexture(-0.5, -0.5, 512, 512, m_AFBOAttach_3_Texture);
-	DrawTexture(0.5, -0.5, 512, 512, m_AFBOAttach_4_Texture);
 }
 
 void Renderer::GetGLPosition(float x, float y, float *newX, float *newY)
@@ -1189,7 +1217,7 @@ void Renderer::CreateFBOs()
 	glGenTextures(1, &m_BFBOTexture);
 	glBindTexture(GL_TEXTURE_2D, m_BFBOTexture);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
@@ -1198,7 +1226,16 @@ void Renderer::CreateFBOs()
 	glGenTextures(1, &m_CFBOTexture);
 	glBindTexture(GL_TEXTURE_2D, m_CFBOTexture);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1024, 1024, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+	glGenTextures(1, &m_DFBOTexture);
+	glBindTexture(GL_TEXTURE_2D, m_DFBOTexture);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
@@ -1209,14 +1246,36 @@ void Renderer::CreateFBOs()
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 1024);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
+	//glGenFramebuffers(1, &m_A_FBO);
+	//glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_AFBOTexture, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_AFBOAttach_1_Texture, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_AFBOAttach_2_Texture, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_AFBOAttach_3_Texture, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, m_AFBOAttach_4_Texture, 0);
+	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthRenderBuffer);
+
 	glGenFramebuffers(1, &m_A_FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_AFBOTexture, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_AFBOAttach_1_Texture, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_AFBOAttach_2_Texture, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_AFBOAttach_3_Texture, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, m_AFBOAttach_4_Texture, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthRenderBuffer);
+
+	glGenFramebuffers(1, &m_B_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_B_FBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_BFBOTexture, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthRenderBuffer);
+
+	glGenFramebuffers(1, &m_C_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_C_FBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_CFBOTexture, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthRenderBuffer);
+
+	glGenFramebuffers(1, &m_D_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_D_FBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_DFBOTexture, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthRenderBuffer);
+
+
 
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER); // 에러 체크
 	
