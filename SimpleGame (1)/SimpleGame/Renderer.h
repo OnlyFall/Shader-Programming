@@ -27,6 +27,9 @@ public:
 	void DrawTest();
 
 	void DrawResult();
+
+	void DrawParticleWithBloom();
+
 private:
 	void Initialize(int windowSizeX, int windowSizeY);
 	bool ReadFile(char* filename, std::string *target);
@@ -40,6 +43,7 @@ private:
 	GLuint CreatePngTexture(char* filePath, GLuint samplingMethod);
 	void CreateGridMesh();
 	void CreateFBOs();
+	void PrepareBloom();
 
 	void CreateParticleVBO(int numParticleCount);
 	GLuint m_ParticleShader = -1;
@@ -53,7 +57,7 @@ private:
 	GLuint m_ParticleColorVBO = -1;
 	GLuint m_ParticlePosColUVVBO = -1;
 	GLuint m_ParticleVertexCount = -1;
-
+	GLuint m_ParticlePositionColorVelUVVBO = -1;
 	bool m_Initialized = false;
 	
 	unsigned int m_WindowSizeX = 0;
@@ -133,5 +137,21 @@ private:
 	void DrawTexture(float x, float y, float scaleX, float scaleY, GLuint texID);
 	GLuint m_DrawTextureVBO = 0;
 	GLuint m_DrawTextureShader = 0;
+
+	// 2023-06-06 Ãß°¡ Bloom
+	GLuint m_HDRFBO = 0;
+	GLuint m_HDRLowTexture = 0;
+	GLuint m_HDRHighTexture = 0;
+	GLuint m_PingpongFBO[2] = { 0,0 };
+	GLuint m_PingpongTexture[2] = { 0,0 };
+	GLuint m_FullRectVBO = 0;
+	GLuint m_GaussianBlurHShader = 0;
+	GLuint m_GaussianBlurVShader = 0;
+
+	void DrawGaussianBlur(GLuint texID, GLuint targetFBOID, GLuint shader);
+
+	GLuint m_DrawMergeTextureShader = 0;
+
+	void DrawMergeBloomTexture(GLuint sceneTexID, GLuint bloomTexID, float exposure);
 };
 

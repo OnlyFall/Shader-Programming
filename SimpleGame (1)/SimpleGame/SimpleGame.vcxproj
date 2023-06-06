@@ -198,6 +198,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </None>
+    <None Include="Shaders\GaussianBlur.vs" />
+    <None Include="Shaders\GaussianBlurH.fs" />
+    <None Include="Shaders\GaussianBlurV.fs" />
+    <None Include="Shaders\MergeTexture.fs" />
+    <None Include="Shaders\MergeTexture.vs" />
     <None Include="Shaders\Particle.fs">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
