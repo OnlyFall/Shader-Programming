@@ -7,6 +7,8 @@
 
 #include "Dependencies\glew.h"
 
+#define TEST_MODE 0
+
 class Renderer
 {
 public:

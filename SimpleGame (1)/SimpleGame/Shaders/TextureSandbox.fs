@@ -91,8 +91,9 @@ void P7()
 	//float x_repeat = u_XYRepeat.x;
 	//float y_repeat = u_XYRepeat.y;
 
-	float x = fract((v_TexPos.x + v_TexPos.y) * 4);
-	float y = fract((v_TexPos.x + (1.0 - v_TexPos.y)) * 4);
+	float y = fract((v_TexPos.x + v_TexPos.y) * 1.5);
+	float value = floor((v_TexPos.x + v_TexPos.y) * 1.5);
+	float x = fract((v_TexPos.x + (1.0 - v_TexPos.y)) * 2) + value / 2 + 0.5;
 	
 	vec2 newTexPos = vec2(x, y);
 	
@@ -137,5 +138,5 @@ void Explosion()
 
 void main()
 {
-	Explosion();
+	P7();
 }

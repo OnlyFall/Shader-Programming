@@ -32,12 +32,12 @@ void RenderScene(void)
 	//g_Renderer->DrawParticle();
 	//g_Renderer->DrawFragmentSandbox();
 	//g_Renderer->DrawVertexSandbox();
-	//g_Renderer->DrawTextureSandbox();
+	g_Renderer->DrawTextureSandbox();
 	//g_Renderer->DrawTest();
 	//g_Renderer->DrawGridMesh();
 
 	//g_Renderer->DrawResult();
-	g_Renderer->DrawParticleWithBloom();
+	//g_Renderer->DrawParticleWithBloom();
 	glutSwapBuffers();
 }
 

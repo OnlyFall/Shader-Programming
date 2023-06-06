@@ -530,9 +530,11 @@ void Renderer::DrawAlphaClear()
 
 void Renderer::DrawTextureSandbox()
 {
+#if TEST_MODE
 	glBindFramebuffer(GL_FRAMEBUFFER, m_D_FBO);
 	glViewport(0, 0, 1024, 1024);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+#endif
 
 	GLuint shader = m_TextureSandboxShader;
 	glUseProgram(shader);
@@ -565,6 +567,8 @@ void Renderer::DrawTextureSandbox()
 	glBindTexture(GL_TEXTURE_2D, m_MergeTexture);
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, m_ExplosionTexture);
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, m_RGBTexture);
 
 	int texID[] = { 0, 1 };
 	GLuint samplerULoc = glGetUniformLocation(shader, "u_MultiSampler");
@@ -572,7 +576,7 @@ void Renderer::DrawTextureSandbox()
 
 	//std::cout << ((int)g_time) % 6 << std::endl;
 	samplerULoc = glGetUniformLocation(shader, "u_TexSampler");
-	glUniform1i(samplerULoc, 7);
+	glUniform1i(samplerULoc, 8);
 	GLuint stepULoc = glGetUniformLocation(shader, "u_Step");
 	glUniform1f(stepULoc, static_cast<float>(static_cast<int>(g_time) % 6));
 	//std::cout << static_cast<float>(static_cast<int>(g_time) % 6) << std::endl;
@@ -594,12 +598,13 @@ void Renderer::DrawVSFrag()
 
 void Renderer::DrawGridMesh()
 {
+#if TEST_MODE
 	glBindFramebuffer(GL_FRAMEBUFFER, m_C_FBO);
 	glViewport(0, 0, 1024, 1024);
 	GLenum drawBuffers = { GL_COLOR_ATTACHMENT0 };
 	glDrawBuffers(1, &drawBuffers);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+#endif
 	GLuint shader = m_GridMeshShader;
 	glUseProgram(shader);
 	glEnable(GL_BLEND);
@@ -682,10 +687,12 @@ void Renderer::DrawResult()
 
 void Renderer::DrawFragmentSandbox()
 {
+#if TEST_MODE
 	glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
 	glViewport(0, 0, 1024, 1024);
 	GLenum drawBuffers = { GL_COLOR_ATTACHMENT0 };
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+#endif
 
 	GLuint shader = m_FragmentSandboxShader; 
 	glUseProgram(shader);
