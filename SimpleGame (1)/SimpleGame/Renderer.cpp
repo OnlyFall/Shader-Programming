@@ -410,15 +410,21 @@ void Renderer::DrawParticleWithBloom()
 	DrawParticle();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+
 	DrawGaussianBlur(m_HDRLowTexture, m_PingpongFBO[0], m_GaussianBlurHShader);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		DrawGaussianBlur(m_PingpongTexture[0], m_PingpongFBO[1], m_GaussianBlurVShader);
 		DrawGaussianBlur(m_PingpongTexture[1], m_PingpongFBO[0], m_GaussianBlurHShader);
 	}
 	DrawGaussianBlur(m_PingpongTexture[0], m_PingpongFBO[1], m_GaussianBlurVShader);
 
+	glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
+	glViewport(0, 0, 1024, 1024);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	DrawTexture(0, 0, 1024, 1024, m_PingpongTexture[1]);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	//DrawTexture(0.5, -0.5, 512, 512, m_HDRLowTexture);
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	//DrawMergeBloomTexture(m_HDRLowTexture, m_PingpongTexture[1], 1.f);
@@ -688,7 +694,7 @@ void Renderer::DrawResult()
 void Renderer::DrawFragmentSandbox()
 {
 #if TEST_MODE
-	glBindFramebuffer(GL_FRAMEBUFFER, m_A_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_B_FBO);
 	glViewport(0, 0, 1024, 1024);
 	GLenum drawBuffers = { GL_COLOR_ATTACHMENT0 };
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

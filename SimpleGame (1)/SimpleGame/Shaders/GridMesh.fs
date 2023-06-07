@@ -24,7 +24,7 @@ void realFlag()
 		float vX = v_TexPos.x;
 		float yWidth = 1.5;
 		float yDistance = yValue - (sinValue * v_TexPos.x - 0.75);
-		float vY = 1.0 - yDistance / yWidth;
+		float vY = 1.0 - yDistance;
 		FragColor = texture(u_Texture, vec2(vX, vY));
 		//FragColor = vec4(vX, vY, 0, 1);
 	}
