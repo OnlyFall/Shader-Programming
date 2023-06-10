@@ -25,13 +25,14 @@ public:
 	void DrawTextureSandbox();
 	void DrawVSFrag();
 	void DrawGridMesh();
-
+	
 	void DrawTest();
 
 	void DrawResult();
 
 	void DrawParticleWithBloom();
 
+	void Timer();
 private:
 	void Initialize(int windowSizeX, int windowSizeY);
 	bool ReadFile(char* filename, std::string *target);

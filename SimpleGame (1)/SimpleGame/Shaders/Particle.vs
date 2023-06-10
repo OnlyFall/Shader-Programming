@@ -32,27 +32,54 @@ void GraphSin()
 	{
 	}
 	else
-	{
-		float newT = a_LifeTime*fract(t/a_LifeTime);
+	{	
+		float newT = a_LifeTime * fract(t/a_LifeTime);
 		float paraX = sin(a_Value * 2 * c_PI);
 		float paraY = cos(a_Value * 2 * c_PI);
-		newPos.x = a_Position.x+ paraX + c_Vel.x * newT;
+		newPos.x = a_Position.x + paraX + c_Vel.x * newT;
 		newPos.y = a_Position.y + paraY + c_Vel.y * newT;
-		
+
 		vec2 nVel = vec2(-c_Vel.y, c_Vel.x);
 		nVel = normalize(nVel);
-		
-		newPos.xy = newPos.xy + 
-					nVel*
-					newT*a_Amp*
-					sin((1.0+newT)*a_Period*newT*2.0*c_PI);
 
-		alpha = 1.0 - newT/a_LifeTime;
-		alpha = pow(alpha, 0.5);
+		newPos.xy = newPos.xy +
+					nVel *
+					newT * a_Amp *
+					sin((1.0 + newT) * a_Period * 2 * c_PI);
 	}
 	gl_Position = newPos;
 	v_Color = vec4(a_Color.rgb, a_Color.a * alpha);
 	v_UV = a_UV;
+}
+
+void ParticleTest()
+{
+	vec4 newPos = vec4(0,0,0,1);
+	float t = u_Time - a_EmitTime;
+	float alpha = 1.f;
+
+	if(t < 0.0)
+	{
+	}
+	else
+	{
+		float newT = a_LifeTime * fract(t / a_LifeTime);
+		float paraX = sin(a_Value * 2 * c_PI);
+		float paraY = cos(a_Value * 2 * c_PI);
+		newPos.x = a_Position.x + paraX + c_Vel.x * newT;
+		newPos.y = a_Position.y + paraY + c_Vel.y * newT;
+
+		vec2 nVel = vec2(-c_Vel.y, c_Vel.x);
+		nVel = normalize(nVel);
+
+		newPos.xy = newPos.xy +
+					nVel *
+					newT * a_Amp *
+					sin((1.0 + newT) * a_Period * 2.0 * c_PI);
+	}
+	gl_Position = newPos;
+	v_Color = vec4(a_Color.rgb, a_Color.a * alpha);
+	v_UV = a_UV;	
 }
 
 void P1()
@@ -65,7 +92,7 @@ void P1()
 	}
 	else
 	{
-		float newT = a_LifeTime*fract(t/a_LifeTime);
+		float newT = a_LifeTime * fract(t / a_LifeTime);
 		newPosition.xyz = a_Position 
 						+ a_Vel * newT
 						+ 0.5 * u_Accel * newT * newT;
@@ -78,4 +105,5 @@ void P1()
 void main()
 {
 	GraphSin();
+	//ParticleTest();
 }

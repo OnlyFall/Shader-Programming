@@ -15,7 +15,8 @@ const float c_PI = 3.141592;
 void realFlag()
 {
 	float period = (v_TexPos.x + 1.0) * 1.0;
-	float xValue = v_TexPos.x * 2.0 * c_PI * period;
+	float xValue = v_TexPos.x * 2.0 * c_PI;
+	//float xValue = v_TexPos.x * 2.0 * c_PI * period;
 	float yValue = ((1.0 - v_TexPos.y) - 0.5) * 2.0;
 	float sinValue = 0.25 * sin(xValue - 2 * u_Time);
 	
@@ -24,7 +25,7 @@ void realFlag()
 		float vX = v_TexPos.x;
 		float yWidth = 1.5;
 		float yDistance = yValue - (sinValue * v_TexPos.x - 0.75);
-		float vY = 1.0 - yDistance;
+		float vY = 1.0 - yDistance / yWidth;
 		FragColor = texture(u_Texture, vec2(vX, vY));
 		//FragColor = vec4(vX, vY, 0, 1);
 	}
@@ -34,9 +35,14 @@ void realFlag()
 	}
 }
 
+void Flag()
+{
+	//vec2 newTexPos = fract(v_TexPos * 2.0);
+	FragColor = texture(u_Texture, v_TexPos);
+}
+
 void main()
 {
-	realFlag();
-	//vec2 newTexPos = fract(v_TexPos * 2.0);
-	//FragColor1 = v_greyScale * texture(u_Texture, newTexPos);
+	//realFlag();
+	Flag();
 }

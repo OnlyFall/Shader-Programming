@@ -31,7 +31,6 @@ void Textured()
 		FragColorHigh = result;
 	else
 		FragColorHigh = vec4(0);
-
 }
 
 void main()

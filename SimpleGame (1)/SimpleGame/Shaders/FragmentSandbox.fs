@@ -54,7 +54,7 @@ void radar()
 {
 	vec2 newValue = v_UV - vec2(0.5, 1);
 	float d = length(newValue);
-	float value = sin(2*c_PI*d - 13*u_Time) - 0.93;
+	float value = sin(2.0 * c_PI * d - 13 * u_Time) - 0.93;
 	float ring_mask = ceil(value);
 
 	float obj_mask = 0.0;
@@ -68,7 +68,7 @@ void radar()
 			obj_mask += 1.0;
 		}
 	}
-	FragColor3 = vec4(ring_mask*obj_mask + 10*value);
+	FragColor0 = vec4(ring_mask*obj_mask + 10*value);
 	
 }
 
@@ -146,11 +146,33 @@ void realFlag()
 	}
 }
 
+void flagtest()
+{
+	float period = (v_UV.x + 1.0) * 1.0;
+	float xValue = v_UV.x * 2.0 * c_PI * period;
+	float yValue = ((1.0 - v_UV.y) - 0.5) * 2.0;
+	float sinValue = 0.25 * sin(xValue - 2.0 * u_Time);
+
+	if(sinValue * v_UV.x + 0.75 > yValue && sinValue * v_UV.x - 0.75 < yValue)
+	{
+		float tx = v_UV.x;
+		float yWidth = 1.5;
+		float yDistance = yValue - (sinValue * v_UV.x - 0.75);
+		float ty = 1.0 - yDistance / yWidth;
+
+		FragColor0 = texture(u_Texture, vec2(tx, ty));
+	}
+	else
+		FragColor0 = vec4(0);
+}
+
 void main()
 {
 	//test();
 	//circle();
 	//circles();
-	//radar();
-	realFlag();
+	//UVTest();
+	radar();
+	//realFlag();
+	//flagtest();
 }

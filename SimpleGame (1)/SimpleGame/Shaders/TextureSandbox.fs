@@ -13,7 +13,12 @@ in vec2 v_TexPos;
 
 void def()
 {
-	FragColor = vec4(v_TexPos, 0, 1);
+	float x = v_TexPos.x * 3;
+	float y = v_TexPos.y;
+
+	y = v_TexPos.y - floor(x) / 3;
+
+	FragColor = texture(u_TexSampler, vec2(x,y));
 }
 
 void example1()
@@ -93,11 +98,23 @@ void P7()
 
 	float y = fract((v_TexPos.x + v_TexPos.y) * 2);
 	float value = floor((v_TexPos.x + v_TexPos.y) * 2);
-	float x = fract((v_TexPos.x + (1.0 - v_TexPos.y)) * 2) + value / 2 + 0.5;
-	
+	float x = fract((v_TexPos.x + (1.0 - v_TexPos.y)) * 2) + value / 2 + 0.5; // value는 y 내림하여 0 1 2 3 일때 0.5씩 더해서 밀어주려고 함!
+	//float x = fract((v_TexPos.x + (1.0 - v_TexPos.y)) * 2);
+
 	vec2 newTexPos = vec2(x, y);
 	
 	FragColor = texture(u_TexSampler, newTexPos);
+}
+
+void testP7()
+{
+	float y = fract((v_TexPos.x + v_TexPos.y) * 2);
+	float value = floor((v_TexPos.x + v_TexPos.y) * 2);
+	float x = fract((v_TexPos.x + (1.0 - v_TexPos.y)) * 2) + value / 2 + 0.5;
+
+	vec2 newPosition = vec2(x,y);
+
+	FragColor = texture(u_TexSampler, newPosition);
 }
 
 void MultiTexture()
@@ -136,7 +153,18 @@ void Explosion()
 	FragColor = texture(u_TexSampler, newTexPos);
 }
 
+void exampleFinal()
+{
+	float y = fract((v_TexPos.x + v_TexPos.y) * 2);
+	float value = floor((v_TexPos.x + v_TexPos.y) * 2);
+	float x = fract((v_TexPos.x + (1.0 - v_TexPos.y)) * 2) + value / 2 + 0.5;
+
+	FragColor = texture(u_TexSampler, vec2(x,y));
+}
+
 void main()
 {
-	P7();
+	//P7();
+	//testP7();
+	exampleFinal();
 }

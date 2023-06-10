@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <assert.h>
 
+float g_time = 0.f;
 Renderer::Renderer(int windowSizeX, int windowSizeY)
 {
 	Initialize(windowSizeX, windowSizeY);
@@ -69,6 +70,11 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 bool Renderer::IsInitialized()
 {
 	return m_Initialized;
+}
+
+void Renderer::Timer()
+{
+	g_time += 0.04;
 }
 
 void Renderer::CreateVertexBufferObjects()
@@ -320,7 +326,7 @@ void Renderer::DrawSolidRect(float x, float y, float z, float size, float r, flo
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-float g_time = 0.f;
+
 
 void Renderer::Class0310_Rendering()
 {	//Program select
@@ -346,7 +352,6 @@ void Renderer::Class0310_Rendering()
 
 	int uniformScale = glGetUniformLocation(m_SolidRectShader, "u_Scale");
 	glUniform1f(uniformScale, g_time);
-	g_time += 0.016;
 	if (g_time > 1.f)
 		g_time = 0.f;
 
@@ -424,10 +429,11 @@ void Renderer::DrawParticleWithBloom()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	DrawTexture(0, 0, 1024, 1024, m_PingpongTexture[1]);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	//DrawTexture(0.5, -0.5, 512, 512, m_HDRLowTexture);
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//DrawMergeBloomTexture(m_HDRLowTexture, m_PingpongTexture[1], 1.f);
+	DrawMergeBloomTexture(m_HDRLowTexture, m_PingpongTexture[1], 1.f);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Renderer::DrawParticle()
@@ -473,32 +479,27 @@ void Renderer::DrawParticle()
 	int emitTimeLoc = glGetAttribLocation(program, "a_EmitTime");
 	glEnableVertexAttribArray(emitTimeLoc);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleEmitTimeVBO);
-	glVertexAttribPointer(emitTimeLoc, 1, GL_FLOAT, GL_FALSE,
-		0, 0);
+	glVertexAttribPointer(emitTimeLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 	int lifeTimeLoc = glGetAttribLocation(program, "a_LifeTime");
 	glEnableVertexAttribArray(lifeTimeLoc);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleLifeTimeVBO);
-	glVertexAttribPointer(lifeTimeLoc, 1, GL_FLOAT, GL_FALSE,
-		0, 0);
+	glVertexAttribPointer(lifeTimeLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 	int periodLoc = glGetAttribLocation(program, "a_Period");
 	glEnableVertexAttribArray(periodLoc);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticlePeriodVBO);
-	glVertexAttribPointer(periodLoc, 1, GL_FLOAT, GL_FALSE,
-		0, 0);
+	glVertexAttribPointer(periodLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 	int ampLoc = glGetAttribLocation(program, "a_Amp");
 	glEnableVertexAttribArray(ampLoc);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleAmpVBO);
-	glVertexAttribPointer(ampLoc, 1, GL_FLOAT, GL_FALSE,
-		0, 0);
+	glVertexAttribPointer(ampLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 	int valueLoc = glGetAttribLocation(program, "a_Value");
 	glEnableVertexAttribArray(valueLoc);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleValueVBO);
-	glVertexAttribPointer(valueLoc, 1, GL_FLOAT, GL_FALSE,
-		0, 0);
+	glVertexAttribPointer(valueLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 
 	int timeLoc = glGetUniformLocation(program, "u_Time");
@@ -506,7 +507,6 @@ void Renderer::DrawParticle()
 	int accelLoc = glGetUniformLocation(program, "u_Accel");
 	glUniform3f(accelLoc, 0.f, -2.8f, 0.f);
 
-	g_time += 0.01;
 
 	int texULoc = glGetUniformLocation(program, "u_Texture");
 	glUniform1i(texULoc, 0);
@@ -588,7 +588,6 @@ void Renderer::DrawTextureSandbox()
 	//std::cout << static_cast<float>(static_cast<int>(g_time) % 6) << std::endl;
 	GLuint seqNumLoc = glGetUniformLocation(shader, "u_SeqNum");
 	glUniform1f(seqNumLoc, g_time);
-	g_time += 0.04;
 	GLuint repeatULoc = glGetUniformLocation(shader, "u_XYRepeat");
 	glUniform2f(repeatULoc, 4.f, 4.f);
 
@@ -623,7 +622,6 @@ void Renderer::DrawGridMesh()
 
 	GLuint timeLoc = glGetUniformLocation(shader, "u_Time");
 	glUniform1f(timeLoc, g_time);
-	g_time += 0.0008;
 
 	int uniformLoc_Texture = glGetUniformLocation(shader, "u_Texture");
 	glUniform1f(uniformLoc_Texture, 0);
@@ -638,7 +636,7 @@ void Renderer::DrawGridMesh()
 
 void Renderer::DrawVertexSandbox()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, m_C_FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_D_FBO);
 	glViewport(0, 0, 1024, 1024);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -654,7 +652,6 @@ void Renderer::DrawVertexSandbox()
 
 	int timeULoc = glGetUniformLocation(shader, "u_Time");
 	glUniform1f(timeULoc, g_time);
-	g_time += 0.016;
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -685,6 +682,7 @@ void Renderer::DrawTest()
 
 void Renderer::DrawResult()
 {
+	//DrawTexture(0, 0, 1024, 1024, m_AFBOTexture);
 	DrawTexture(-0.5, 0.5, 512, 512, m_AFBOTexture);
 	DrawTexture(0.5, 0.5, 512, 512, m_BFBOTexture);
 	DrawTexture(-0.5, -0.5, 512, 512, m_CFBOTexture);
@@ -722,7 +720,6 @@ void Renderer::DrawFragmentSandbox()
 	glUniform2fv(pointsUloc, 3, points);
 	int timeUloc = glGetUniformLocation(shader, "u_Time");
 	glUniform1f(timeUloc, g_time);
-	g_time += 0.004;
 
 	//
 	int uniformLoc_Texture = glGetUniformLocation(shader, "u_Texture");
@@ -826,7 +823,7 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 	float* vertices = NULL;
 	vertices = new float[totalFloatCount];
 
-	float particleSize = 0.01f;
+	float particleSize = 0.04f;
 
 	int index = 0;
 	for (int i = 0; i < numParticleCount; i++)
@@ -979,8 +976,7 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 
 	glGenBuffers(1, &m_ParticleAmpVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleAmpVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*totalFloatCountSingle,
-		verticesAmpTime, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*totalFloatCountSingle, verticesAmpTime, GL_STATIC_DRAW);
 	delete[] verticesAmpTime;
 
 	//value
@@ -1001,8 +997,7 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 
 	glGenBuffers(1, &m_ParticleValueVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleValueVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*totalFloatCountSingle,
-		verticesValue, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*totalFloatCountSingle, verticesValue, GL_STATIC_DRAW);
 	delete[] verticesValue;	
 
 	//color
@@ -1050,9 +1045,7 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 
 	glGenBuffers(1, &m_ParticleColorVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticleColorVBO);
-	glBufferData(GL_ARRAY_BUFFER, 
-		sizeof(float)*totalFloatCountFour,
-		verticesColor, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*totalFloatCountFour, verticesColor, GL_STATIC_DRAW);
 	delete[] verticesColor;
 	   	  
 	//pos+color+UV vbo
@@ -1066,10 +1059,10 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 	{
 		float particelCenterX = 0.f; // 2.f*(((float)rand() / (float)RAND_MAX) - 0.5f);
 		float particelCenterY = 0.f; // 2.f*(((float)rand() / (float)RAND_MAX) - 0.5f);
-		float r = 100.f * (float)rand() / (float)RAND_MAX;
-		float g = 100.f * (float)rand() / (float)RAND_MAX;
-		float b = 100.f * (float)rand() / (float)RAND_MAX;
-		float a = 1.f*((float)rand() / (float)RAND_MAX);
+		float r = 5.f * (float)rand() / (float)RAND_MAX;
+		float g = 5.f * (float)rand() / (float)RAND_MAX;
+		float b = 5.f * (float)rand() / (float)RAND_MAX;
+		float a = 1.f * (float)rand() / (float)RAND_MAX;
 
 		verticesPosColorUV[index] = particelCenterX - particleSize; index++;
 		verticesPosColorUV[index] = particelCenterY + particleSize; index++;
@@ -1134,9 +1127,7 @@ void Renderer::CreateParticleVBO(int numParticleCount)
 
 	glGenBuffers(1, &m_ParticlePosColUVVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_ParticlePosColUVVBO);
-	glBufferData(GL_ARRAY_BUFFER, 
-		sizeof(float)*totalFloatCountPosColUV,
-		verticesPosColorUV, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*totalFloatCountPosColUV, verticesPosColorUV, GL_STATIC_DRAW);
 	delete[] verticesPosColorUV;
 
 
